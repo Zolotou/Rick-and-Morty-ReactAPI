@@ -1,6 +1,7 @@
 import { Component } from "react";
 import './App.css';
 import List from "./components/List";
+import Details from "./components/Details";
 
 
 class App extends Component {
@@ -8,22 +9,32 @@ class App extends Component {
     super();
     this.state = {
       ImgUrl: "",
-      data: null
+      data: null,
+      currentCharacter : ""
     }
     
     this.fetchData = this.fetchData.bind(this);
+    this.handleCharacter = this.handleCharacter.bind(this);
   }
 
-  async fetchData () {
-    const urlAPI = "https://rickandmortyapi.com/api/character/1,2,3,4,5,6";
-    const res = await fetch(urlAPI);
+  handleCharacter(characterID){
+    this.setState({
+      ...this.state,
+      currentCharacter: characterID
+    })
+    
+  }
+
+
+  async fetchData (urlAPI) {
+    const res = await fetch(`https://rickandmortyapi.com/api/character/${urlAPI}`);
     const data = await res.json();  
     return data;
 
   }
   
   async componentDidMount() {
-    const result = await this.fetchData();
+    const result = await this.fetchData("1,2,3,4,5,6");
     console.log(result);
     this.setState({
       ...this.state,
@@ -33,11 +44,11 @@ class App extends Component {
 
 
 
-  render() {  
-    console.log(this.state.data);                                                                                                                                            
+  render() {                                                                                                                                           
     return (
       <div className="App">
-      <List data={this.state.data} />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+      <List  data={this.state.data} handleCharacter={this.handleCharacter} />
+      <Details characterID={this.state.currentCharacter} />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
       </div>
     );
   }
