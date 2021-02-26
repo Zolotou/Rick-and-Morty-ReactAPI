@@ -34,7 +34,12 @@ class App extends Component {
   }
   
   async componentDidMount() {
-    const result = await this.fetchData("1,2,3,4,5,6");
+    const array = new Array(6);
+    for(let i = 0; i< array.length; i++){
+      array[i] = Math.floor(Math.random() * 671 + 1 );
+    }
+    console.log(array);
+    const result = await this.fetchData(array.join(","));
     console.log(result);
     this.setState({
       ...this.state,
