@@ -1,10 +1,11 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import loading from "../assets/Loading.gif";
 
 export class Details extends Component {
     constructor() {
         super();
         this.state = {
-            data : [],
+            data: [],
             seconds: 0,
             loading: false,
         }
@@ -17,24 +18,22 @@ export class Details extends Component {
         this.setState({
             ...this.state,
             seconds: newSecond
-        })      
-      }    
+        })
+    }
 
-      componentDidMount() {
+    componentDidMount() {
         this.interval = setInterval(() => this.tick(), 1000);
-      }
+    }
 
-      componentWillUnmount() {
+    componentWillUnmount() {
         clearInterval(this.interval);
-      }
+    }
 
-    async componentDidUpdate(prevProps) {
-        
-        // Typical usage (don't forget to compare props):
+    async componentDidUpdate(prevProps) {        
         if (this.props.characterID !== prevProps.characterID) {
             this.setState({
                 loading: true,
-                seconds : 0
+                seconds: 0
             })
             await this.fetchData(this.props.characterID);
         }
@@ -51,17 +50,19 @@ export class Details extends Component {
     }
 
     render() {
-        const {name, gender, image, species, status } = this.state.data;        
+        const { name, gender, image, species, status } = this.state.data;
         console.log(this.state.loading);
         return (
             <div className="details-field">
-                {this.state.loading ? <h2>LOADING</h2> : <div>                <h2>Name: { name }</h2>
-                <p>Gender: {gender}</p>
-                <img src={image} alt={name} />
-                <p>Species: {species}</p>
-                <p>Status: {status}</p>
-                <p>Location: { this.state.data.location?.name }</p>
-                <p>Timer:{this.state.seconds}</p>
+                {this.state.loading ? <img src={loading} alt="loading"></img> :
+                    <div>
+                        <h2>Name: {name}</h2>
+                        <p>Gender: {gender}</p>
+                        <img src={image} alt={name} />
+                        <p>Species: {species}</p>
+                        <p>Status: {status}</p>
+                        <p>Location: {this.state.data.location?.name}</p>
+                        <p>Timer:{this.state.seconds}</p>
                     </div>}
 
             </div>
